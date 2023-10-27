@@ -1,0 +1,45 @@
+.filter-dropdown {
+    position: relative;
+    margin-right: 500px;
+  
+  }
+
+  .dropdown-button {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    background-color: grey;
+  }
+  .dropdown-button svg {
+    margin-right: 8px;
+  }
+  
+  .dropdown-button:hover {
+    background-color: black;
+  }
+  .filter-dropdown:hover  {
+    display: block;
+  }
+  .filter-icon {
+    margin-right: 8px;
+  }
+  
+  .round-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    padding: 8px 15px;
+    border-color: #333;
+  }
+  
+  .round-button:hover {
+    transform: scale(1.03);
+  }
+ 

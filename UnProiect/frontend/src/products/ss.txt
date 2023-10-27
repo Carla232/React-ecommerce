@@ -1,0 +1,352 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./ModalContent.css";
+import {FaAngleDown,FaAngleUp,FaPlus,FaMinus, FaChevronRight } from "react-icons/fa";
+import FilterByCategory from "./FilterByCategory";
+
+
+const ModalContent = ({ onClose, showCloseButton }) => {
+  const [products, setProducts] = useState([]);
+  const [showCategoryFilter, setShowCategoryFilter] = useState(false);
+  const [showBrand, setshowBrand] = useState(true);
+  const [showBrandFilter, setShowBrandFilter] = useState(false);
+  const [showPriceFilter, setShowPriceFilter] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const brands = ['Brand 1', 'Brand 2', 'Brand 3', 'Brand 4', 'Brand 5', 'Brand 6'];
+  const [selectedPrice, setSelectedPrice] = useState('');
+  const [filterApplied, setFilterApplied] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const prices = ["Any price", "Under EUR 20", "EUR 20 to EUR 50", "EUR 50 to EUR 100", "Over EUR 100", "Custom"];
+  const [lowPrice, setLowPrice] = useState('');
+  const [highPrice, setHighPrice] = useState('');
+  const [isApplied, setIsApplied] = useState(false);
+  useEffect(() => {
+    axios.get('http://localhost:4000/products')
+      .then(res => {
+        console.log(res.data);
+        setProducts(res.data);  
+        setFilteredProducts(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+  const handleSelectBrand = (brand) => {
+
+    if ( selectedBrands.includes(brand)) {
+      setSelectedBrands(selectedBrands.filter(b => b !== brand));
+    } else {
+      setSelectedBrands([...selectedBrands, brand]);
+    }
+  };
+
+  const selectedProducts = products.filter(
+    (product) =>
+      selectedBrands.length === 0 || selectedBrands.includes(product.brand)
+  );
+
+  const handleApply = () => {
+    setIsApplied(true);
+  };
+
+
+  const handleReset = () => {
+    setSelectedBrands([]);
+    setIsApplied(false);
+  };
+  const handleLowPriceChange = (event) => {
+    setLowPrice(event.target.value);
+  setProducts([]);
+    setFilterApplied(false);
+
+    axios.get('http://localhost:4000/products')
+      .then(res => {
+        console.log(res.data);
+        setProducts(res.data);  
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  const handlePriceChange = (event) => {
+    setSelectedPrice(event.target.value);
+    setLowPrice("");
+  setHighPrice("");
+  setProducts([]);
+    setFilterApplied(false);
+
+    axios.get('http://localhost:4000/products')
+      .then(res => {
+        console.log(res.data);
+        setProducts(res.data);  
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  const handleHighPriceChange = (event) => {
+    setHighPrice(event.target.value);
+  setProducts([]);
+    setFilterApplied(false);
+
+    axios.get('http://localhost:4000/products')
+      .then(res => {
+        console.log(res.data);
+        setProducts(res.data);  
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let newFilteredProducts = [];
+  
+    if (selectedPrice || (lowPrice && highPrice)) {
+      if (selectedPrice === "Custom") {
+        newFilteredProducts = products.filter(
+          (product) =>
+            product.price >= parseInt(lowPrice) && product.price <= parseInt(highPrice)
+        );
+      } else {
+        newFilteredProducts = products.filter(
+          (product) => product.price === selectedPrice
+        );
+      }
+    } else {
+      newFilteredProducts = products;
+    }
+  
+    setFilteredProducts(newFilteredProducts);
+    setFilterApplied(true);
+  };
+  
+  
+  const toggleShowMore = () => {
+    setShowMore(!showMore);
+  };
+
+
+  const toggleBrandFilter = () => {
+    setShowBrandFilter(!showBrandFilter);
+  };
+  const togglePriceFilter = () => {
+    setShowPriceFilter(!showPriceFilter);
+  };
+
+  const handleShowCategoryFilterClick = () => {
+    setShowCategoryFilter(true);
+    setshowBrand(false);
+  };
+
+
+  const handleHideFilters = () => {
+    setShowCategoryFilter(false);
+    setshowBrand(true);
+  };
+
+  return (
+    <div className="etsy-filters">
+      <h2>{showCategoryFilter ? "Category" : "Filters"}</h2>
+      {!showCategoryFilter && showBrand && (
+        <p>Filter by category</p>
+      )}
+      {!showCategoryFilter && showCloseButton && (
+        <button
+          onClick={onClose}
+          className="close-button"
+        >
+          Close
+        </button>
+      )}
+      {!showCategoryFilter && (
+        <button
+          onClick={handleShowCategoryFilterClick}
+          className="show-category-filter"
+        >
+          Show Category Filter <FaChevronRight />
+        </button>
+      )}
+
+      {showCategoryFilter && (
+        <button onClick={handleHideFilters}>Back</button>
+      )}
+
+      <div className="filter-groups">
+        {!showCategoryFilter && showBrand && (
+          <div className="filter-group">
+               <button onClick={toggleBrandFilter} className="brand-btn">
+        Brands{' '}
+        {showBrandFilter ? (
+          <FaAngleUp className="brand-filter-icon" />
+        ) : (
+          <FaAngleDown className="brand-filter-icon" />
+        )}
+      </button>
+      {showBrandFilter && (
+  <div className="brand-filter">
+  <ul>
+    {brands.slice(0, showMore ? brands.length : 4).map((brand, index) => (
+      <li key={index}>
+        <label>
+        <input
+                      type="checkbox"
+                      value={brand}
+                      onChange={() => handleSelectBrand(brand)}
+                    />
+          {brand}
+        </label>
+      </li>
+    ))}
+  </ul>
+  {brands.length > 4 && (
+    <button onClick={toggleShowMore} className="show-more-button"> {showMore ? (
+      <>
+        <FaMinus /> Show less
+      </>
+    ) : (
+      <>
+        <FaPlus /> Show more
+      </>
+    )}</button>
+  )}
+</div>
+)}   {isApplied && (
+  <ul>
+    {selectedProducts.map((product) => (
+      <li key={product.id}>
+        {product.name} ({product.brand})
+      </li>
+    ))}
+  </ul>
+)}
+          </div>
+        )}
+ {!showCategoryFilter && showBrand && (
+          <div className="filter-group">
+               <button onClick={togglePriceFilter} className="brand-btn">
+        Price{' '}
+        {showPriceFilter ? (
+          <FaAngleUp className="brand-filter-icon" />
+        ) : (
+          <FaAngleDown className="brand-filter-icon" />
+        )}
+      </button>
+      {showPriceFilter && (
+  <div className="brand-filter">
+  <ul>
+        {prices.slice(0, showMore ? prices.length : 4).map((price, index) => (
+          <li key={index}>
+            <label>
+              <input
+                type="radio"
+                name="price"
+                value={price}
+                checked={selectedPrice === price}
+                onChange={handlePriceChange}
+              />
+              {price}
+            </label>
+            {index === prices.length - 1 && selectedPrice === "Custom" && (
+              <div className="custom-input">
+            <label>
+              <input
+                type="number"
+                value={lowPrice}
+                onChange={handleLowPriceChange}
+                placeholder="Low"
+              />
+              to
+              <input
+                type="number"
+                value={highPrice}
+                onChange={handleHighPriceChange}
+                placeholder="High"
+              />
+            </label>
+      </div>
+           )}
+          </li>
+        ))}
+      </ul>
+    
+  {prices.length > 4 && (
+    <button onClick={toggleShowMore} className="show-more-button"> {showMore ? (
+      <>
+        <FaMinus /> Show less
+      </>
+    ) : (
+      <>
+        <FaPlus /> Show more
+      </>
+    )}</button>
+  )}
+</div>
+)}{filterApplied && (
+
+
+ <ul>
+        {products
+          .filter((product) => {
+            if (selectedPrice === "Any Price") return true;
+            if (selectedPrice === "Under EUR 20") return product.old_price < 20;
+            if (selectedPrice === "EUR 20 to EUR 50") return product.old_price >= 20 && product.old_price <= 50;
+            if (selectedPrice === "EUR 50 to EUR 100") return product.old_price >= 50 && product.old_price <= 100;
+            if (selectedPrice === "Over EUR 100") return product.old_price > 100;
+            if (selectedPrice === "Custom") {
+              return product.old_price >= lowPrice && product.old_price <= highPrice;
+            }
+          
+          })
+          .map((product) => (
+            <li key={product.id}>{product.title} - {product.old_price}</li>
+          ))}
+   
+      </ul>
+   
+      )}
+      {filterApplied && products.length === 0 ? (
+      <p>No products found</p>
+    ) : (
+      <ul>
+        {/* Product list rendering code */}
+      </ul>
+    )}
+          </div>
+        )}
+        {showCategoryFilter && (
+          <div className="filter-group">
+            <FilterByCategory />
+          </div>
+        )}
+      </div>
+     
+      <div className="filter-buttons">
+        <button className="apply-filters" onClick={handleApply}>
+          Apply
+        </button>
+        <button onClick={handleReset}>Reset</button>
+      </div>
+
+    </div>
+  );
+};
+
+export default ModalContent;
+
+<ItemList items={items} />
+{isApplied && (
+  <>
+    {filteredProducts.length > 0 ? (
+      <ul>
+        {filteredProducts.map((product) => (
+          <ProductCard product={product} key={product.id} />
+        ))}
+      </ul>
+    ) : (
+      <p>No products found</p>
+    )}
+  </>
+)}
+<FilterBar filteredProducts={filteredProducts} />

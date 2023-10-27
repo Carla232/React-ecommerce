@@ -1,0 +1,221 @@
+{!showCategoryFilter && showBrandFilter && (
+  <div className="filter-group">
+        <h3>Size</h3>
+        <div className="filter-content">
+          <label>
+            <input type="checkbox" />
+            XS
+          </label>
+          <label>
+            <input type="checkbox" />
+            S
+          </label>
+          <label>
+            <input type="checkbox" />
+            M
+          </label>
+          <label>
+            <input type="checkbox" />
+            L
+          </label>
+          <label>
+            <input type="checkbox" />
+            XL
+          </label>
+          <label>
+            <input type="checkbox" />
+            XXL
+          </label>
+        </div>
+      </div>
+ )}
+  {!showCategoryFilter && showBrandFilter && (
+     <div className="filter-group">
+     <h3>Color</h3>
+     <div className="filter-content">
+       <label>
+         <input type="checkbox" />
+         Red
+       </label>
+       <label>
+         <input type="checkbox" />
+         Blue
+       </label>
+       <label>
+         <input type="checkbox" />
+         Green
+       </label>
+       <label>
+         <input type="checkbox" />
+         Yellow
+       </label>
+       <label>
+         <input type="checkbox" />
+         Black
+       </label>
+       <label>
+         <input type="checkbox" />
+         White
+       </label>
+       <label>
+         <input type="checkbox" />
+         Gray
+       </label>
+       <label>
+         <input type="checkbox" />
+         Brown
+       </label>
+     </div>
+   </div>
+  )}
+      <div className="filter-group">
+        <h3>Material</h3>
+        <div className="filter-content">
+        {showMore ? (
+        <> <label>
+        <input type="checkbox" />
+        Wool
+      </label>
+      <label>
+        <input type="checkbox" />
+        Leather
+      </label>
+      <label>
+        <input type="checkbox" />
+        Denim
+      </label>
+      <label>
+        <input type="checkbox" />
+        Velvet
+      </label>
+          <label>
+            <input type="checkbox" />
+            Cotton
+          </label>
+          <label>
+            <input type="checkbox" />
+            Polyester
+          </label>
+          <label>
+            <input type="checkbox" />
+            Silk
+          </label>
+          <button onClick={handleShowLessClick} className="show-more-button"> <FaMinus /> Show less</button>
+        </>
+      ) : (
+        <>
+          <label>
+            <input type="checkbox" />
+            Wool
+          </label>
+          <label>
+            <input type="checkbox" />
+            Leather
+          </label>
+          <label>
+            <input type="checkbox" />
+            Denim
+          </label>
+          <label>
+            <input type="checkbox" />
+            Velvet
+          </label>
+          <button onClick={handleShowMoreClick} className="show-more-button"> <FaPlus /> Show more</button>
+        </>
+      )}
+  </div>
+</div>
+
+
+# Paste your code here
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./ModalContent.css";
+import {FaAngleDown,FaAngleUp,FaPlus,FaMinus, FaChevronRight } from "react-icons/fa";
+import FilterByCategory from "./FilterByCategory";
+
+
+const ModalContent = ({ onClose, showCloseButton }) => {
+  const [products, setProducts] = useState([]);
+  const [showCategoryFilter, setShowCategoryFilter] = useState(false);
+  const [showBrand, setshowBrand] = useState(true);
+  const [showBrandFilter, setShowBrandFilter] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const brands = ['Brand 1', 'Brand 2', 'Brand 3', 'Brand 4', 'Brand 5', 'Brand 6'];
+
+  useEffect(() => {
+    axios.get('http://localhost:4000/products')
+      .then(res => {
+        setProducts(res.data);  
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+  
+  
+  const toggleShowMore = () => {
+    setShowMore(!showMore);
+  };
+
+
+  const toggleBrandFilter = () => {
+    setShowBrandFilter(!showBrandFilter);
+  };
+  const togglePriceFilter = () => {
+    setShowPriceFilter(!showPriceFilter);
+  };
+
+  const handleShowCategoryFilterClick = () => {
+    setShowCategoryFilter(true);
+    setshowBrand(false);
+  };
+
+
+  const handleHideFilters = () => {
+    setShowCategoryFilter(false);
+    setshowBrand(true);
+  };
+return(
+   <div className="filter-groups">
+ {!showCategoryFilter && showBrand && (
+          <div className="filter-group">
+               <button onClick={toggleBrandFilter} className="brand-btn">
+        Brands{' '}
+        {showBrandFilter ? (
+          <FaAngleUp className="brand-filter-icon" />
+        ) : (
+          <FaAngleDown className="brand-filter-icon" />
+        )}
+      </button>
+      {showBrandFilter && (
+  <div className="brand-filter">
+  <ul>
+    {brands.slice(0, showMore ? brands.length : 4).map((brand, index) => (
+      <li key={index}>
+        <label>
+          <input type="checkbox" value={brand} />
+          {brand}
+        </label>
+      </li>
+    ))}
+  </ul>
+  {brands.length > 4 && (
+    <button onClick={toggleShowMore} className="show-more-button"> {showMore ? (
+      <>
+        <FaMinus /> Show less
+      </>
+    ) : (
+      <>
+        <FaPlus /> Show more
+      </>
+    )}</button>
+  )}
+</div>
+)}
+          </div>
+        )}
+        </div>
+);
+
+export default ModalContent;
