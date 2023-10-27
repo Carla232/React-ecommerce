@@ -1,0 +1,13 @@
+.subcategories {
+    background-color: #f2f2f2;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5px;
+    font-weight: normal;
+  }
+  
+  .subcategory {
+    margin: 5px;
+    font-weight: normal;
+  }

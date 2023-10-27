@@ -1,0 +1,36 @@
+.product-count {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+
+  .product-list-divider {
+    margin-top: 1rem;
+    border: none;
+    border-top: 1px solid #ccc;
+  }
+  .subtotal-container {
+    display: flex;
+    align-items: center;
+    max-width: 20%; /* Add this */
+    margin: 0 auto; /* And this */
+  }
+  
+  .subtotal-total {
+    margin-left: auto;
+  }
+  .divider {
+    width: 70%;
+  margin: 1rem auto;
+  border-top: 1px solid #ccc;
+  }
+  .content-container {
+    max-width: 85%;
+    margin: 0 auto;
+  }

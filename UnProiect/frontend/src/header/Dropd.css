@@ -1,0 +1,44 @@
+.menu {
+  position: relative;
+   padding-top: 50px; /* redu valoarea */
+}
+
+.menu-header {
+  cursor: pointer;
+}
+
+.top-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid black;    
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .top-menu-item > div {
+    cursor: pointer;
+    color: black;
+  }
+  .menu .top-menu-item a {
+    border: none; 
+    font-weight: normal;
+    color: black;
+  }
+  .top-submenu {
+    color: black;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    outline: none;
+    text-align: center;
+    background-color: transparent; 
+   
+  }
+
+.top-menu-item-name {
+    text-align: center; 
+  }

@@ -1,0 +1,81 @@
+/*.menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative; 
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e5e5; 
+}*/
+.menu{
+  margin-top: 50px;
+}
+
+.menu .top-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu .top-menu-item {
+  margin: 10px -10px;
+  display: flex;
+  flex-direction: column; /* add this line */
+}
+
+.menu .top-menu-item a {
+  color: #333 ;            
+  display: block;
+  padding: 17px 15px; /* increase padding to make text more readable */
+  text-decoration: none;
+  border: 1px solid #333;
+  font-size: 14px; /* change font size */
+  font-weight: bold; /* change font weight */
+  transition: all 0.3s ease-in-out; /* add hover transition */
+  white-space: nowrap;
+}
+
+.menu .top-menu-item a + .top-submenu {
+  margin-left: auto;
+}
+
+.menu .top-submenu {
+  display:block;
+  position: absolute;
+  top: 0; /* adjust this value as needed */
+  left: 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  z-index: 1;
+  white-space: nowrap;
+  padding-left: 10px;
+  margin-top: 52px;
+}
+
+.menu-header.departments {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.menu .top-menu-item:hover .top-submenu {
+  display: block;
+}
+
+.menu .top-submenu .top-list {
+  margin: -8%;
+  white-space: nowrap;
+}
+
+.menu .top-menu-item .top-submenu {
+  top: 0;
+  left: 500%;
+  flex-direction: column;
+}
+
+.menu .top-submenu .top-list a {
+  padding: 16px 15px; /* adjust this value as needed */ 
+}

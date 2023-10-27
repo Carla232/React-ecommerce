@@ -1,0 +1,28 @@
+.product {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .product img {
+    width: 400px;
+    height: 400px;
+    margin-right: 50px;
+    margin-left: 20%;
+    margin-top: 5%;
+  }
+  
+  .product-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .product-info h2 {
+    margin: 0;
+  }
+  
+  .product-info .reviews {
+    color: gray;
+    font-size: 14px;
+  }
+  
